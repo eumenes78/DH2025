@@ -148,4 +148,11 @@ function keyPressed() {
     pelicanVY = jumpForce;
     isOnGround = false;
   }
+  
+  // Change direction with arrow keys
+  if (keyCode === LEFT_ARROW) {
+    direction = -1; // Move left
+  } else if (keyCode === RIGHT_ARROW) {
+    direction = 1;  // Move right
+  }
 }
