@@ -13,6 +13,7 @@ let clouds = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  noCursor(); // Hide default cursor
   pelicanX = 0;
   groundLevel = height * 0.8 - 40; // Ground surface minus pelican height
   pelicanY = groundLevel;
@@ -70,6 +71,9 @@ function draw() {
   if (trail.length > 100) {
     trail.shift();
   }
+  
+  // Draw butterfly cursor
+  drawButterflyAt(mouseX, mouseY);
 }
 
 function drawClouds() {
@@ -134,6 +138,48 @@ function drawPelicanOnBike(x, y) {
   line(-10, -10, -20, 30);
   line(10, -10, 20, 30);
 
+  pop();
+}
+
+function drawButterflyAt(x, y) {
+  push();
+  translate(x, y);
+  
+  // Butterfly wings
+  noStroke();
+  
+  // Left wing (top)
+  fill(255, 100, 150, 200); // Pink
+  ellipse(-8, -8, 15, 20);
+  
+  // Right wing (top)
+  fill(150, 100, 255, 200); // Purple
+  ellipse(8, -8, 15, 20);
+  
+  // Left wing (bottom)
+  fill(255, 150, 100, 200); // Orange
+  ellipse(-6, 5, 12, 15);
+  
+  // Right wing (bottom)
+  fill(100, 255, 150, 200); // Green
+  ellipse(6, 5, 12, 15);
+  
+  // Body
+  fill(80, 50, 30);
+  ellipse(0, 0, 3, 20);
+  
+  // Antennae
+  stroke(80, 50, 30);
+  strokeWeight(1);
+  line(-2, -10, -4, -15);
+  line(2, -10, 4, -15);
+  
+  // Antennae tips
+  noStroke();
+  fill(255, 200, 0);
+  ellipse(-4, -15, 2, 2);
+  ellipse(4, -15, 2, 2);
+  
   pop();
 }
 
