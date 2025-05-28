@@ -1,7 +1,12 @@
 let pelicanX;
 let pelicanY;
+let pelicanVY = 0; // vertical velocity for jumping
 let speedX;
 let direction = 1;
+let gravity = 0.8;
+let jumpForce = -15;
+let groundLevel;
+let isOnGround = true;
 
 let trail = [];
 let clouds = [];
@@ -9,7 +14,8 @@ let clouds = [];
 function setup() {
   createCanvas(windowWidth, windowHeight);
   pelicanX = 0;
-  pelicanY = height * 0.7;
+  groundLevel = height * 0.8 - 40; // Ground surface minus pelican height
+  pelicanY = groundLevel;
   speedX = 2;
 
   // Create initial clouds
@@ -38,8 +44,19 @@ function draw() {
 
   drawPelicanOnBike(pelicanX, pelicanY);
 
-  // update pelican position
+  // Apply gravity and update pelican position
+  pelicanVY += gravity;
+  pelicanY += pelicanVY;
   pelicanX += speedX * direction;
+
+  // Ground collision detection
+  if (pelicanY >= groundLevel) {
+    pelicanY = groundLevel;
+    pelicanVY = 0;
+    isOnGround = true;
+  } else {
+    isOnGround = false;
+  }
 
   // Add trail puff
   trail.push({ x: pelicanX, y: pelicanY + 35, alpha: 255 });
@@ -122,4 +139,13 @@ function drawPelicanOnBike(x, y) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+  groundLevel = height * 0.8 - 40; // Update ground level when window resizes
+}
+
+function keyPressed() {
+  // Jump when spacebar is pressed and pelican is on ground
+  if (key === ' ' && isOnGround) {
+    pelicanVY = jumpForce;
+    isOnGround = false;
+  }
 }
