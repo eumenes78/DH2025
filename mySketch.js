@@ -7,6 +7,7 @@ let gravity = 0.8;
 let jumpForce = -15;
 let groundLevel;
 let isOnGround = true;
+let canDoubleJump = false; // Track if double jump is available
 
 let trail = [];
 let clouds = [];
@@ -55,6 +56,7 @@ function draw() {
     pelicanY = groundLevel;
     pelicanVY = 0;
     isOnGround = true;
+    canDoubleJump = false; // Reset double jump when landing
   } else {
     isOnGround = false;
   }
@@ -189,10 +191,18 @@ function windowResized() {
 }
 
 function keyPressed() {
-  // Jump when spacebar is pressed and pelican is on ground
-  if (key === ' ' && isOnGround) {
-    pelicanVY = jumpForce;
-    isOnGround = false;
+  // Jump when spacebar is pressed
+  if (key === ' ') {
+    if (isOnGround) {
+      // First jump from ground
+      pelicanVY = jumpForce;
+      isOnGround = false;
+      canDoubleJump = true; // Enable double jump after first jump
+    } else if (canDoubleJump) {
+      // Double jump in air
+      pelicanVY = jumpForce * 0.8; // Slightly weaker double jump
+      canDoubleJump = false; // Use up the double jump
+    }
   }
   
   // Change direction with arrow keys
